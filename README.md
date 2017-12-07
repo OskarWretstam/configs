@@ -1,2 +1,2 @@
 # configs
-emacs configuration and some notes
+emacs configuration, git configuration and some notes

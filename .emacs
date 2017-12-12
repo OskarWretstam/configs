@@ -17,7 +17,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+)
+
 
 (require 'ido)
 (ido-mode t)
@@ -27,8 +28,8 @@
 (load-theme 'wombat)
 (global-set-key [C-S-iso-lefttab]  'next-error)
 (global-linum-mode t)
-(add-hook 'c-mode-hook (lambda () (setq comment-start "//"
-					comment-end   "")))
+(add-hook 'c-mode-hook (lambda () (setq comment-start "/*"
+					comment-end   "*/")))
 (setq frame-title-format
   '(:eval
     (if buffer-file-name
@@ -38,6 +39,8 @@
           (regexp-quote (getenv "HOME")) "~"
           (convert-standard-filename buffer-file-name)))
       (buffer-name))))
-
-
-
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+(electric-pair-mode 1)
+(setq split-height-threshold 1200)
+(setq split-width-threshold 2000)

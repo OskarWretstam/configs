@@ -45,3 +45,10 @@
 (setq split-height-threshold 1200)
 (setq split-width-threshold 2000)
 (global-set-key (kbd "M-RET") 'other-window)
+(setq compilation-exit-message-function
+(lambda (status code msg)
+(when (and (eq status 'exit) (zerop code))
+(bury-buffer "*compilation*")
+(replace-buffer-in-windows "*compilation*"))
+(cons msg code)))
+(global-set-key (kbd "C-c m") 'recompile)

@@ -1,7 +1,13 @@
 [user]
+	name = Wretstam Oskar
 	email = oskar.wretstam.ow@gmail.com
-	name = Oskar Wretstam
 [core]
 	excludesfile = /home/owretstam/.gitignore_global
 [alias]
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"

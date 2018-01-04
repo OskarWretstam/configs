@@ -52,3 +52,4 @@
 (replace-buffer-in-windows "*compilation*"))
 (cons msg code)))
 (global-set-key (kbd "C-c m") 'recompile)
+(setq compilation-scroll-output 'first-error)

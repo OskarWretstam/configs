@@ -1,4 +1,3 @@
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -51,5 +50,6 @@
 (bury-buffer "*compilation*")
 (replace-buffer-in-windows "*compilation*"))
 (cons msg code)))
-(global-set-key (kbd "C-c m") 'recompile)
+(global-set-key (kbd "C-x c") 'recompile)
 (setq compilation-scroll-output 'first-error)
+(setq backup-directory-alist `(("." . "~/.saves")))

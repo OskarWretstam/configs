@@ -27,8 +27,8 @@
 (load-theme 'wombat)
 (global-set-key [C-S-iso-lefttab]  'next-error)
 (global-linum-mode t)
-(add-hook 'c-mode-hook (lambda () (setq comment-start "/*"
-					comment-end   "*/")))
+(add-hook 'c-mode-hook (lambda () (setq comment-start "// "
+                                        comment-end   "")))
 (setq frame-title-format
   '(:eval
     (if buffer-file-name
@@ -53,3 +53,4 @@
 (global-set-key (kbd "C-x c") 'recompile)
 (setq compilation-scroll-output 'first-error)
 (setq backup-directory-alist `(("." . "~/.saves")))
+(global-set-key (kbd "C-c C-v") 'uncomment-region)

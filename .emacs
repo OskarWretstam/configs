@@ -54,3 +54,7 @@
 (setq compilation-scroll-output 'first-error)
 (setq backup-directory-alist `(("." . "~/.saves")))
 (global-set-key (kbd "C-c C-v") 'uncomment-region)
+(defun request-kill-permission ()
+  (interactive)
+  (y-or-n-p "Do you really want to kill emacs? "))
+(add-hook 'kill-emacs-query-functions #'request-kill-permission)

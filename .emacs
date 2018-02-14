@@ -24,7 +24,7 @@
 (tool-bar-mode)
 (setq column-number-mode t)
 (scroll-bar-mode 1)
-(load-theme 'wombat)
+(load-theme 'wombat) ;;Maybe go with solarized here?
 (global-set-key [C-S-iso-lefttab]  'next-error)
 (global-linum-mode t)
 (add-hook 'c-mode-hook (lambda () (setq comment-start "// "

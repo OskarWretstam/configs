@@ -58,3 +58,5 @@
   (interactive)
   (y-or-n-p "Do you really want to kill emacs? "))
 (add-hook 'kill-emacs-query-functions #'request-kill-permission)
+(wehn (fboundp 'winner-mode)
+      (winner-mode 1))

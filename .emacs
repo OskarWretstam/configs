@@ -22,7 +22,7 @@
 (setq-default tab-width 3)          ;;Tab is 3 spaces
 (setq c-default-style "linux"
       c-basic-offset 3)             ;;Tab is 3 spaces again
-(require 'ido)                      
+(require 'ido)
 (ido-mode t)                        ;;Browse files quicker
 (tool-bar-mode -1)                  ;;Disable toolbar
 (setq column-number-mode t)         ;;Show column number for marker in bottom bar
@@ -56,10 +56,10 @@
 (global-set-key (kbd "C-x c") 'recompile)                       ;;Recompile with ctrl-x c
 (setq compilation-scroll-output 'first-error)                   ;;Scroll compilation buffer with output
 (setq backup-directory-alist `(("." . "~/.saves")))             ;;Put auto-save files in ~/.saves
-(global-set-key (kbd "C-c C-v") 'uncomment-region)              ;;uncomment marked region ctrl-c ctrl-v 
+(global-set-key (kbd "C-c C-v") 'uncomment-region)              ;;uncomment marked region ctrl-c ctrl-v
 (defun request-kill-permission ()
   (interactive)
-  (y-or-n-p "Do you really want to kill emacs? "))             
+  (y-or-n-p "Do you really want to kill emacs? "))
 (add-hook 'kill-emacs-query-functions #'request-kill-permission) ;;Ask before killing emacs
 (when (fboundp 'winner-mode)                                     ;;Undo/redo window-splits
       (winner-mode 1))
@@ -86,3 +86,5 @@
                 (revert-buffer t t t)))))                       ;; /Re-read all open buffers from disk
         (select-frame frm1)                                     ;;|with meta-x revert-all-buffers
         (delete-frame frm2)))))                                 ;; \when git branch switch or checkout
+(add-hook 'before-save-hook 'delete-trailing-whitespace)        ;;Remove trailing whitespace at save
+(put 'downcase-region 'disabled nil)                            ;;Enable region to lowercase ctrl-x ctrl-l

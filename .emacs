@@ -88,3 +88,5 @@
         (delete-frame frm2)))))                                 ;; \when git branch switch or checkout
 (add-hook 'before-save-hook 'delete-trailing-whitespace)        ;;Remove trailing whitespace at save
 (put 'downcase-region 'disabled nil)                            ;;Enable region to lowercase ctrl-x ctrl-l
+(global-set-key [C-kp-add] 'text-scale-increase)                ;;/ctrl-keypad+ increase text size
+(global-set-key [C-kp-subtract] 'text-scale-decrease)           ;;\ctrl-keypad- decrease text size

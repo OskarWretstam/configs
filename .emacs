@@ -90,5 +90,4 @@
 (put 'downcase-region 'disabled nil)                            ;;Enable region to lowercase ctrl-x ctrl-l
 (global-set-key [C-kp-add] 'text-scale-increase)                ;;/ctrl-keypad+ increase text size
 (global-set-key [C-kp-subtract] 'text-scale-decrease)           ;;\ctrl-keypad- decrease text size
-(setq debug-on-error t)                                         ;;For initialisation debugging
 (setq initial-scratch-message "")                               ;;Empty scratch

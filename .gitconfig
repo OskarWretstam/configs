@@ -5,10 +5,15 @@
 	excludesfile = /home/owretstam/.gitignore_global
 [alias]
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	lit = log master --graph --decorate --abbrev-commit
 	branched = branch -rv
 [diff]
-    tool = meld
+	tool = meld
 [difftool]
-    prompt = false
+	prompt = false
 [difftool "meld"]
-    cmd = meld "$LOCAL" "$REMOTE"
+	cmd = meld "$LOCAL" "$REMOTE"
+[color]
+	ui = auto
+[merge]
+	tool = meld

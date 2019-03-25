@@ -1,0 +1,9 @@
+#pretty ls
+alias ll='ls -alhF'
+
+#git aliases
+alias gt='git status'
+alias gd='git diff'
+alias gb='git branch'
+alias gp='git pull'
+alias gl='git lol'

@@ -1,68 +1,94 @@
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(c-basic-offset 3)         ;; Indent by 3 spaces?
- '(c-default-style
-   (quote
-    ((c-mode . "linux")
-     (java-mode . "java")
-     (other . "gnu"))))      ;; No idea what this does
- '(inhibit-startup-screen t) ;; No welcome message
-)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;Don't put autosaves in workspace
+(setq backup-directory-alist `(("." . "~/.saves")))
 
-(setq-default indent-tabs-mode-nil) ;;No tabs
-(setq-default tab-width 3)          ;;Tab is 3 spaces
+;;No welcome screen
+(setq inhibit-splash-screen t)
+
+;;Undo/redo buffer-window management
+(winner-mode 1)
+
+;;Which function is the cursor in, displayed on overlay
+(which-func-mode)
+
+;;Nice theme
+(load-theme 'tango-dark)
+
+;;3-space tabs
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 3)
 (setq c-default-style "linux"
-      c-basic-offset 3)             ;;Tab is 3 spaces again
+		c-basic-offset 3)
+
+;;Sweet path autocompletion
 (require 'ido)
-(ido-mode t)                        ;;Browse files quicker
-(tool-bar-mode -1)                  ;;Disable toolbar
-(setq column-number-mode t)         ;;Show column number for marker in bottom bar
-(scroll-bar-mode 1)                 ;;Scroll bar for each buffer
-(load-theme 'wombat)                ;;Theme not useable in red enviroment
-(global-set-key [C-S-iso-lefttab]  'next-error)                 ;;Next compilation error/warning ctrl-shift-tab
-(global-linum-mode t)                                           ;;Line numbers in each buffer
+(ido-mode t)
+
+;;No ugly bar overlay
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
+;;Show column number in overlay, useful for coding standard page-width
+(setq column-number-mode t)
+
+;;No scroll bar
+(scroll-bar-mode -1)
+
+
+;;Jump between compilation errors/warnings keybind
+(global-set-key [C-S-iso-lefttab] 'next-error)
+
+;;Comment out region keybind
 (add-hook 'c-mode-hook (lambda () (setq comment-start "// "
-                                        comment-end   "")))     ;;C-style comment marked region Ctrl-c Ctrl-c
+													 comment-end   "")))
+
+;;Show path to buffer in menu bar
 (setq frame-title-format
-  '(:eval
-    (if buffer-file-name
-        (replace-regexp-in-string
-         "\\\\" "/"
-         (replace-regexp-in-string
-          (regexp-quote (getenv "HOME")) "~"
-          (convert-standard-filename buffer-file-name)))
-      (buffer-name))))                                          ;;Show path to file in top emacs name bar
-(setq show-paren-delay 0)                                       ;;Highlight parenthesis without delay
-(show-paren-mode 1)                                             ;;Highlight matching parenthesis
-(electric-pair-mode 1)                                          ;;Insert matching parenthesis
-(setq split-height-threshold 1200)                              ;;/Prevent emacs from auto-split into
-(setq split-width-threshold 2000)                               ;;\more than two windows
-(global-set-key (kbd "M-RET") 'other-window)                    ;;Cycle windows with meta-ret
-(setq compilation-exit-message-function
-(lambda (status code msg)
-(when (and (eq status 'exit) (zerop code))
-(bury-buffer "*compilation*")
-(replace-buffer-in-windows "*compilation*"))                    ;;/Auto-close compilation buffer if
-(cons msg code)))                                               ;;\no errors.
-(global-set-key (kbd "C-x c") 'recompile)                       ;;Recompile with ctrl-x c
-(setq compilation-scroll-output 'first-error)                   ;;Scroll compilation buffer with output
-(setq backup-directory-alist `(("." . "~/.saves")))             ;;Put auto-save files in ~/.saves
-(global-set-key (kbd "C-c C-v") 'uncomment-region)              ;;uncomment marked region ctrl-c ctrl-v
+		'(:eval
+		  (if buffer-file-name
+				(replace-regexp-in-string
+				 "\\\\" "/"
+				 (replace-regexp-in-string
+				  (regexp-quote (getenv "HOME")) "-"
+				  (convert-standard-filename buffer-file-name)))
+			 (buffer-name))))
+
+;;Auto-highlight matching parenthesis without delay
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+
+;;Auto-match when typing opening characters
+(electric-pair-mode 1)
+
+;;Prevent auto-split to new windows
+(setq split-height-threshold 1200)
+(setq split-width-threshold 2000)
+
+;;Other window but backwards
+(defun other-window-backwards()
+  "Invoke other window with -1."
+  (interactive)
+  (other-window -1))
+
+;;Keybinds for other window ( & backwards)
+(global-set-key (kbd "s-<return>") 'other-window)
+(global-set-key (kbd "S-s-<return>") 'other-window-backwards)
+
+;;Recompile keybind
+(global-set-key (kbd "C-x c") 'recompile)
+
+;;Auto scroll compilation output until error
+(setq compilation-scroll-output t)
+
+;;Keybind uncomment region
+(global-set-key (kbd "C-c C-v") 'uncomment-region)
+
+;;Ask before exit
 (defun request-kill-permission ()
   (interactive)
   (y-or-n-p "Do you really want to kill emacs? "))
-(add-hook 'kill-emacs-query-functions #'request-kill-permission) ;;Ask before killing emacs
-(when (fboundp 'winner-mode)                                     ;;Undo/redo window-splits
-      (winner-mode 1))
+(add-hook 'kill-emacs-query-functions #'request-kill-permission)
+
+;;Reload all open buffers from disk
 (defun revert-all-buffers ()
   "Iterate through the list of buffers and revert them, e.g. after a
     new branch has been checked out."
@@ -83,11 +109,80 @@
                 (select-frame frm2))
               (when (file-exists-p (buffer-file-name x))
                 (switch-to-buffer (buffer-name x))
-                (revert-buffer t t t)))))                       ;; /Re-read all open buffers from disk
-        (select-frame frm1)                                     ;;|with meta-x revert-all-buffers
-        (delete-frame frm2)))))                                 ;; \when git branch switch or checkout
-(add-hook 'before-save-hook 'delete-trailing-whitespace)        ;;Remove trailing whitespace at save
-(put 'downcase-region 'disabled nil)                            ;;Enable region to lowercase ctrl-x ctrl-l
-(global-set-key [C-kp-add] 'text-scale-increase)                ;;/ctrl-keypad+ increase text size
-(global-set-key [C-kp-subtract] 'text-scale-decrease)           ;;\ctrl-keypad- decrease text size
-(setq initial-scratch-message "")                               ;;Empty scratch
+                (revert-buffer t t t)))))
+        (select-frame frm1)
+        (delete-frame frm2)))))
+
+;;No idea
+(put 'downcase-region 'disabled nil)
+
+;;Text scale keybinds
+(global-set-key [C-kp-add] 'text-scale-increase)
+(global-set-key [C-kp-subtract] 'text-scale-decrease)
+
+;;Empty scratch
+(setq initial-scratch-message "")
+
+;;Follow symbolic links when opened
+(setq vc-follow-symlinks t)
+
+;;No line wraps
+(set-default 'truncate-lines t)
+
+;;Dired listing
+(setq dired-listing-switches "-alhF")
+
+;;Scroll half page
+(defun scroll-half-page (direction)
+  "Scroll half page in parameter direction"
+  (let ((opos (cdr (nth 6 (posn-at-point)))))
+	 ;;opos = original position line relative to window
+	 (move-to-window-line nil)
+	 (if direction
+		  (recenter-top-bottom -1)
+		(recenter-top-bottom 0))
+	 (move-to-window-line opos)))
+
+(defun scroll-half-page-down ()
+  "Scroll half page down"
+  (interactive)
+  (scroll-half-page nil))
+
+(defun scroll-half-page-up ()
+  "Scroll half page up"
+  (interactive)
+  (scroll-half-page t))
+
+;;Keybind half page scrolls
+(global-set-key (kbd "C-v") 'scroll-half-page-down)
+(global-set-key (kbd "M-v") 'scroll-half-page-up)
+
+;;Delete trailing whitespace save hook
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;;fancy calendar
+;;(setq view-diary-entries-initially t
+;;		mark-diary-entries-in-calendar t
+;;		number-of-diary-entries 7)
+;;(add-hook 'diary-display-hook 'fancy-diary display)
+;;(add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+
+;;remote machine
+;;(defun connect-remote ()
+;;  (interactive)
+;;  (dired "/ssh:$USER@host:/"))
+
+;;Octave command line
+(add-hook 'inferior-octave-mode-hook
+			 (lambda ()
+				(define-key inferior-octave-mode-map [up]
+				  'comint-previous-input)
+				(define-key inferior-octave-mode-map [down]
+				  'comint-next-input)))
+
+;;Custom
+(custom-set-variables
+ '(show-paren-mode t))
+
+(custom-set-faces
+ )

@@ -1,0 +1,15 @@
+- arcod iso on usb-stick
+
+- disable secure boot and setup boot option boot.efi
+
+- update mirrors and clear drive with gparted
+
+- select packages @todo export the resulting config file here, what was the name?
+
+- enable some nice to have services
+   - systemctl enable lightdm.service # my current login manager - will also link up to awsome
+   - systemctl enable bluetooth.service # guess what
+
+- display management with xrandr (-s <resolution>  & --output <display> --mode <resolution>)
+
+- awesome keybinds are not compatible with emacs working on rc.lua

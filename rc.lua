@@ -113,7 +113,7 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = { "web", "c-dev", "rust-dev", "gimp", "misc", "spotify' }
+awful.util.tagnames = { "web", "c-dev", "rust-dev", "gimp", "misc", "spotify" }
 -- @todo what is a nice layout?
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
@@ -210,7 +210,6 @@ beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv
 
 -- {{{ Menu
 local myawesomemenu = {
-    { "hotkeys", function() return false, hotkeys_popup.show_help end },
     { "arandr", "arandr" },
 }
 
@@ -282,117 +281,89 @@ globalkeys = my_table.join(
 
     -- {{{ Personal keybindings
 
-    -- super + ... function keys
-    awful.key({ modkey }, "F1", function () awful.util.spawn( browser1 ) end,
-        {description = browser1, group = "function keys"}),
-    awful.key({ modkey }, "F2", function () awful.util.spawn( editorgui ) end,
-        {description = editorgui , group = "function keys" }),
+    -- super + ...
+    awful.key({ modkey }, "b", function () awful.util.spawn( browser1 ) end,
+        {description = browser1, group = "my-keys"}),
+    awful.key({ modkey }, "e", function () awful.util.spawn( editorgui ) end,
+        {description = editorgui , group = "my-keys" }),
     -- dmenu
-    awful.key({ modkey }, "F3",
+    awful.key({ modkey }, "r",
     function ()
         awful.spawn(string.format("dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn NotoMonoRegular:bold:pixelsize=14",
         beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus))
 	end,
-    {description = "show dmenu", group = "function keys"}),
-    awful.key({ modkey }, "F4", function () awful.util.spawn( "gimp" ) end,
-        {description = "gimp" , group = "function keys" }),
-    awful.key({ modkey }, "F7", function () awful.util.spawn( "virtualbox" ) end,
-        {description = virtualmachine , group = "function keys" }),
-    awful.key({ modkey }, "F8", function () awful.util.spawn( filemanager ) end,
-        {description = filemanager , group = "function keys" }),
-    awful.key({ modkey }, "F10", function () awful.util.spawn( mediaplayer ) end,
-        {description = mediaplayer , group = "function keys" }),
-
-    -- super + ...
+    {description = "show dmenu", group = "my-keys"}),
+    awful.key({ modkey }, "g", function () awful.util.spawn( "gimp" ) end,
+        {description = "gimp" , group = "my-keys" }),
+    awful.key({ modkey }, "a", function () awful.util.spawn( "arandr" ) end,
+        {description = "arandr" , group = "my-keys" }),
+    awful.key({ modkey }, "v", function () awful.util.spawn( "virtualbox" ) end,
+        {description = virtualmachine , group = "my-keys" }),
+    awful.key({ modkey }, "f", function () awful.util.spawn( filemanager ) end,
+        {description = filemanager , group = "my-keys" }),
+    awful.key({ modkey }, "s", function () awful.util.spawn( mediaplayer ) end,
+        {description = mediaplayer , group = "my-keys" }),
     awful.key({ modkey }, "t", function () awful.util.spawn( terminal ) end,
-        {description = "terminal", group = "super"}),
-
-    -- screenshots
-    awful.key({ }, "Print", function () awful.util.spawn("scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'") end,
-        {description = "Scrot", group = "screenshots"}),
-    awful.key({ modkey1           }, "Print", function () awful.util.spawn( "xfce4-screenshooter" ) end,
-        {description = "Xfce screenshot", group = "screenshots"}),
-    awful.key({ modkey1, "Shift"  }, "Print", function() awful.util.spawn("gnome-screenshot -i") end,
-        {description = "Gnome screenshot", group = "screenshots"}),
-
-    -- Personal keybindings}}}
-
-
-    -- Hotkeys Awesome
-
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-        {description = "show help", group="awesome"}),
-
-    -- Tag browsing with modkey
+        {description = "terminal", group = "my-keys"}),
+    awful.key({ modkey,           }, "h",      hotkeys_popup.show_help,
+        {description = "show help", group="my-keys"}),
     awful.key({ modkey1, altkey }, "Left",   awful.tag.viewprev,
-        {description = "view previous", group = "tag"}),
+        {description = "view previous", group = "my-keys"}),
     awful.key({ modkey1, altkey }, "Right",  awful.tag.viewnext,
-        {description = "view next", group = "tag"}),
-
-    -- Default client focus
+        {description = "view next", group = "my-keys"}),
     awful.key({ altkey,           }, "Tab",
         function ()
             awful.client.focus.byidx( 1)
         end,
-        {description = "focus next by index", group = "client"}
+        {description = "focus next by index", group = "my-keys"}
     ),
     awful.key({ altkey, "Shift" }, "Tab",
         function ()
             awful.client.focus.byidx(-1)
         end,
-        {description = "focus previous by index", group = "client"}
+        {description = "focus previous by index", group = "my-keys"}
     ),
-
-    -- Widgets popups
-    --awful.key({ altkey, }, "c", function () lain.widget.calendar.show(7) end,
-        --{description = "show calendar", group = "widgets"}),
-
-    -- Brightness
+    awful.key({ modkey, }, "c", function () lain.widget.calendar.show(7) end,
+        {description = "show calendar", group = "my-keys"}),
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
-              {description = "+10%", group = "hotkeys"}),
+              {description = "+10%", group = "my-keys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
-              {description = "-10%", group = "hotkeys"}),
-
-    -- ALSA volume control
+              {description = "-10%", group = "my-keys"}),
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
             os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
             beautiful.volume.update()
-        end),
+        end, {description = "+1%", group = "my-keys"}),
     awful.key({ }, "XF86AudioLowerVolume",
         function ()
             os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
             beautiful.volume.update()
-        end),
+        end, {description = "-1%", group = "my-keys"}),
     awful.key({ }, "XF86AudioMute",
         function ()
             os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
             beautiful.volume.update()
-        end)
+        end, {description = "Mute", group = "my-keys"})
+
+    -- Personal keybindings}}}
 )
 
 clientkeys = my_table.join(
-    awful.key({ modkey,           }, "f",
-        function (c)
-            c.fullscreen = not c.fullscreen
-            c:raise()
-        end,
-        {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, },           "q",      function (c) c:kill()                         end,
-              {description = "close", group = "hotkeys"}),
+              {description = "close", group = "my-keys"}),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
             c.minimized = true
         end ,
-        {description = "minimize", group = "client"}),
+        {description = "minimize", group = "my-keys"}),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
         end ,
-        {description = "maximize", group = "client"})
+        {description = "maximize", group = "my-keys"})
 )
 
 -- Bind all key numbers to tags.
@@ -400,9 +371,9 @@ clientkeys = my_table.join(
 -- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, 9 do
     -- Hack to only show tags 1 and 9 in the shortcut window (mod+s)
-    local descr_view, descr_toggle, descr_move, descr_toggle_focus
+    local descr_move
     if i == 1 or i == 9 then
-        descr_move = {description = "move focused client to tag #", group = "tag"}
+        descr_move = {description = "move focused client to tag #", group = "my-keys"}
     end
     globalkeys = my_table.join(globalkeys,
         -- Move client to tag.

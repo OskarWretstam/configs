@@ -1,16 +1,3 @@
---[[
-
-     Awesome WM configuration template
-     https://github.com/awesomeWM
-
-     Freedesktop : https://github.com/lcpz/awesome-freedesktop
-
-     Copycats themes : https://github.com/lcpz/awesome-copycats
-
-     lain : https://github.com/lcpz/lain
-
---]]
-
 -- {{{ Required libraries
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
@@ -103,6 +90,7 @@ local themes = {
 }
 
 -- choose your theme here
+-- @todo check different themes
 local chosen_theme = themes[1]
 
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
@@ -115,25 +103,24 @@ local modkey1      = "Control"
 
 -- personal variables
 --change these variables if you want
-local browser1          = "vivaldi-stable"
-local browser2          = "firefox"
-local browser3          = "chromium -no-default-browser-check"
+local browser1          = "firefox"
 local editor            = os.getenv("EDITOR") or "nano"
-local editorgui         = "atom"
+local editorgui         = "emacs"
 local filemanager       = "thunar"
-local mailclient        = "evolution"
 local mediaplayer       = "spotify"
-local terminal          = "urxvt"
+local terminal          = "alacritty"
 local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
 awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒", "➓" }
+-- @todo decide what layout to use
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
 -- Use this : https://fontawesome.com/cheatsheet
 --awful.util.tagnames = { "", "", "", "", "" }
+-- @todo what is a nice layout?
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -242,7 +229,6 @@ awful.util.mymainmenu = freedesktop.menu.build({
     after = {
         { "Terminal", terminal },
         { "Log out", function() awesome.quit() end },
-        { "Sleep", "systemctl suspend" },
         { "Restart", "systemctl reboot" },
         { "Shutdown", "systemctl poweroff" },
         -- other triads can be put here
@@ -336,8 +322,6 @@ globalkeys = my_table.join(
         {description = virtualmachine , group = "function keys" }),
     awful.key({ modkey }, "F8", function () awful.util.spawn( filemanager ) end,
         {description = filemanager , group = "function keys" }),
-    awful.key({ modkey }, "F9", function () awful.util.spawn( mailclient ) end,
-        {description = mailclient , group = "function keys" }),
     awful.key({ modkey }, "F10", function () awful.util.spawn( mediaplayer ) end,
         {description = mediaplayer , group = "function keys" }),
     awful.key({ modkey }, "F11", function () awful.util.spawn( "rofi -show run -fullscreen" ) end,
@@ -349,7 +333,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "c", function () awful.util.spawn( "conky-toggle" ) end,
         {description = "conky-toggle", group = "super"}),
     awful.key({ modkey }, "e", function () awful.util.spawn( editorgui ) end,
-        {description = "run gui editor", group = "super"}),
+        {description = "run gui editor", group = "super"}),   -- @todo seems nice to have set to emacs
     --awful.key({ modkey }, "h", function () awful.util.spawn( "urxvt -T 'htop task manager' -e htop" ) end,
         --{description = "htop", group = "super"}),
     awful.key({ modkey }, "r", function () awful.util.spawn( "rofi-theme-selector" ) end,
@@ -388,10 +372,6 @@ globalkeys = my_table.join(
         {description = filemanager, group = "alt+ctrl"}),
     awful.key({ modkey1, altkey   }, "c", function() awful.util.spawn("catfish") end,
         {description = "catfish", group = "alt+ctrl"}),
-    awful.key({ modkey1, altkey   }, "f", function() awful.util.spawn( browser2 ) end,
-        {description = browser2, group = "alt+ctrl"}),
-    awful.key({ modkey1, altkey   }, "g", function() awful.util.spawn( browser3 ) end,
-        {description = browser3, group = "alt+ctrl"}),
     awful.key({ modkey1, altkey   }, "i", function() awful.util.spawn("nitrogen") end,
         {description = nitrogen, group = "alt+ctrl"}),
     awful.key({ modkey1, altkey   }, "k", function() awful.util.spawn( "arcolinux-logout" ) end,
@@ -920,37 +900,12 @@ awful.rules.rules = {
 
     -- Set applications to always map on the tag 1 on screen 1.
     -- find class or role via xprop command
-    --{ rule = { class = browser2 },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
     --{ rule = { class = browser1 },
       --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-    --{ rule = { class = "Vivaldi-stable" },
-        --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true } },
-
-    --{ rule = { class = "Chromium" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-    --{ rule = { class = "Opera" },
-      --properties = { screen = 1, tag = awful.util.tagnames[1],switchtotag = true  } },
 
     -- Set applications to always map on the tag 2 on screen 1.
     --{ rule = { class = "Subl3" },
         --properties = { screen = 1, tag = awful.util.tagnames[2],switchtotag = true  } },
-
-    --{ rule = { class = editorgui },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-    --{ rule = { class = "Brackets" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-    --{ rule = { class = "Code" },
-        --properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-    --    { rule = { class = "Geany" },
-         --  properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
 
     -- Set applications to always map on the tag 3 on screen 1.
     --{ rule = { class = "Inkscape" },
@@ -971,50 +926,11 @@ awful.rules.rules = {
     { rule = { class = editorgui },
           properties = { maximized = true } },
 
-    { rule = { class = "Geany" },
-          properties = { maximized = false, floating = false } },
-
     { rule = { class = "Gimp*", role = "gimp-image-window" },
-          properties = { maximized = true } },
-
-    { rule = { class = "Gnome-disks" },
-          properties = { maximized = true } },
-
-    { rule = { class = "inkscape" },
           properties = { maximized = true } },
 
     { rule = { class = mediaplayer },
           properties = { maximized = true } },
-
-    { rule = { class = "Vlc" },
-          properties = { maximized = true } },
-
-    { rule = { class = "VirtualBox Manager" },
-          properties = { maximized = true } },
-
-    { rule = { class = "VirtualBox Machine" },
-          properties = { maximized = true } },
-
-    { rule = { class = "Vivaldi-stable" },
-          properties = { maximized = false, floating = false } },
-
-    { rule = { class = "Vivaldi-stable" },
-          properties = { callback = function (c) c.maximized = false end } },
-
-    --IF using Vivaldi snapshot you must comment out the rules above for Vivaldi-stable as they conflict
---    { rule = { class = "Vivaldi-snapshot" },
---          properties = { maximized = false, floating = false } },
-
---    { rule = { class = "Vivaldi-snapshot" },
---          properties = { callback = function (c) c.maximized = false end } },
-
-    { rule = { class = "Xfce4-settings-manager" },
-          properties = { floating = false } },
-
-
-
-
-
 
     -- Floating clients.
     { rule_any = {
@@ -1082,53 +998,6 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
-end)
-
--- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
-    -- Custom
-    if beautiful.titlebar_fun then
-        beautiful.titlebar_fun(c)
-        return
-    end
-
-    -- Default
-    -- buttons for the titlebar
-    local buttons = my_table.join(
-        awful.button({ }, 1, function()
-            c:emit_signal("request::activate", "titlebar", {raise = true})
-            awful.mouse.client.move(c)
-        end),
-        awful.button({ }, 3, function()
-            c:emit_signal("request::activate", "titlebar", {raise = true})
-            awful.mouse.client.resize(c)
-        end)
-    )
-
-    awful.titlebar(c, {size = dpi(21)}) : setup {
-        { -- Left
-            awful.titlebar.widget.iconwidget(c),
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
-            },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
-        },
-        { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
-    }
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.

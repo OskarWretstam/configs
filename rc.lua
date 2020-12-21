@@ -113,7 +113,7 @@ local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = { "web", "c-dev", "rust-dev", "gimp", "misc", "spotify" }
+awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏" }
 -- @todo what is a nice layout?
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
@@ -323,8 +323,8 @@ globalkeys = my_table.join(
         end,
         {description = "focus previous by index", group = "my-keys"}
     ),
-    awful.key({ modkey, }, "c", function () lain.widget.calendar.show(7) end,
-        {description = "show calendar", group = "my-keys"}),
+    awful.key({ modkey }, "c", function () awful.util.spawn( "code" ) end,
+        {description = code, group = "my-keys"}),
     awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
               {description = "+10%", group = "my-keys"}),
     awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
